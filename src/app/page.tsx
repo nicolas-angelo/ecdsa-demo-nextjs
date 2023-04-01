@@ -1,23 +1,32 @@
-import { headers } from 'next/headers';
+// 'use client';
 
-async function getBalances() {
-  // const res = await fetch('/api/balances');
-  // if (!res.ok) {
-  //   // This will activate the closest `error.js` Error Boundary
-  //   throw new Error('Failed to fetch data');
-  // }
-
-  // return res.json();
-  return null;
-}
+export const revalidate = 0;
 
 export default async function Home() {
-  const headersInstance = headers();
-  console.log('host:', headersInstance.get('host'));
-  // const balances = await getBalances();
+  const res = await fetch(
+    `https://nextjsnt3nzw-w151--3000.local-credentialless.webcontainer.io/api/balances`,
+    {
+      cache: 'no-cache',
+    }
+  );
 
-  // if (!balances) {
-  //   return <div>no balances</div>;
-  // }
-  return <div>hello</div>;
+  const getBalances = async () => {
+    try {
+      const res = await fetch(`/api/balances`, {
+        cache: 'no-cache',
+      });
+      console.log(res.json());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const balances = await res.json();
+
+  return (
+    <div>
+      <p>balance: {JSON.stringify(balances)}</p>
+      <button onClick={getBalances}>Get balance</button>
+    </div>
+  );
 }
