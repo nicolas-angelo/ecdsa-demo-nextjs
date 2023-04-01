@@ -2,35 +2,49 @@ import { promises as fs } from "fs";
 import path from "path";
 
 type BalanceSheet = Record<string, number>;
+
 interface BalanceHelpers {
 	getAll: () => BalanceSheet;
 	getByAddress: (address: string) => number;
 	delete: (address: string) => Promise<void>;
 }
 
+interface DBData {
+  balances: BalanceSheet;
+}
+
 export default class DB {
-	private balancesData: BalanceSheet;
+  private data!: DBData;
 	constructor() {
-		this.balancesData = require(this.getPath("balances"));
+		this.data = {
+      balances: require('app/db/data/balances.json') as BalanceSheet,
+    };
+    this.init();
 	}
 
-	getPath(collection: string) {
-		return path.resolve(__dirname, "data", `${collection}.json`);
+	init() {
+    Object.keys(this.data).forEach((key) => {
+      Object.defineProperty(this, key, {
+        get() {
+          return this.data[key];
+        },
+        enumerable: true,
+        configurable: true,
+      });
+    });
 	}
 
-	async writeData<T>(collection: string, data: T) {
-		return await fs.writeFile(
-			this.getPath(collection),
-			JSON.stringify(data)
-		);
-	}
+  async writeData<T>(collection: string, data: T) {
+    const filePath = path.join("app", "db", "data", `${collection}.json`);
+    return await fs.writeFile(filePath, JSON.stringify(data));
+  }
 
 	balances: BalanceHelpers = {
-		getAll: () => this.balancesData,
-		getByAddress: (address: string) => this.balancesData[address],
-		delete: async (address: string) => {
-			delete this.balancesData[address];
-			await this.writeData<BalanceSheet>("balances", this.balancesData);
-		},
+    getAll: () => this.data.balances,
+    getByAddress: (address: string) => this.data.balances[address],
+    delete: async (address: string) => {
+      delete this.data.balances[address];
+      await this.writeData<BalanceSheet>("balances", this.data.balances);
+    },
 	};
 }
