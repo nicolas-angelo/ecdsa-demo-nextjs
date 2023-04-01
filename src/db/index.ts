@@ -9,6 +9,7 @@ interface BalanceHelpers {
 	delete: (address: string) => Promise<void>;
 }
 
+
 interface DBData {
   balances: BalanceSheet;
 }
@@ -22,7 +23,7 @@ export default class DB {
     this.init();
 	}
 
-	init() {
+  private init() {
     Object.keys(this.data).forEach((key) => {
       Object.defineProperty(this, key, {
         get() {
@@ -32,6 +33,16 @@ export default class DB {
         configurable: true,
       });
     });
+
+    const balanceSheet = { ...this.data.balances };
+    this.balances = {
+      getAll: () => balanceSheet,
+      getByAddress: (address: string) => balanceSheet[address],
+      delete: async (address: string) => {
+        delete balanceSheet[address];
+        await this.writeData<BalanceSheet>("balances", balanceSheet);
+      },
+    };
 	}
 
   async writeData<T>(collection: string, data: T) {
@@ -39,12 +50,15 @@ export default class DB {
     return await fs.writeFile(filePath, JSON.stringify(data));
   }
 
-	balances: BalanceHelpers = {
-    getAll: () => this.data.balances,
-    getByAddress: (address: string) => this.data.balances[address],
-    delete: async (address: string) => {
-      delete this.data.balances[address];
-      await this.writeData<BalanceSheet>("balances", this.data.balances);
-    },
-	};
+  balances: BalanceHelpers;
+
+
+	// balances: BalanceHelpers = {
+  //   getAll: () => this.data.balances,
+  //   getByAddress: (address: string) => this.data.balances[address],
+  //   delete: async (address: string) => {
+  //     delete this.data.balances[address];
+  //     await this.writeData<BalanceSheet>("balances", this.data.balances);
+  //   },
+	// };
 }
