@@ -3,6 +3,8 @@
 	"editor.formatOnPaste": true,
 	"editor.tabSize": 2,
 	"prettier.singleQuote": true,
-	"prettier.tabWidth": 2
+	"prettier.tabWidth": 2,
 	// "prettier.useTabs": false,
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"typescript.enablePromptUseWorkspaceTsdk": true
 }

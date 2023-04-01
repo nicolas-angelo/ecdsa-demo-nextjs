@@ -1,0 +1,8 @@
+{
+	"recommendations": [
+		"esbenp.prettier-vscode",
+		"bradlc.vscode-tailwindcss",
+		"snowflake107.snowflake-dark",
+    "github.copilot"
+	]
+}
