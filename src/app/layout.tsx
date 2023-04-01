@@ -1,13 +1,13 @@
-import 'app/app/global.css';
+import "app/app/global.css";
 
 export default function RootLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body className="h-screen bg-neutral-800">{children}</body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<body className="h-screen bg-neutral-800">{children}</body>
+		</html>
+	);
 }
