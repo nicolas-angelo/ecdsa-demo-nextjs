@@ -23,7 +23,7 @@ export default class DB {
     this.init();
 	}
 
-  private init() {
+    private init() {
     Object.keys(this.data).forEach((key) => {
       Object.defineProperty(this, key, {
         get() {
@@ -33,9 +33,42 @@ export default class DB {
         configurable: true,
       });
     });
+  }
 
+  // private init() {
+  //   Object.keys(this.data).forEach((key) => {
+  //     Object.defineProperty(this, key, {
+  //       get() {
+  //         return this.data[key];
+  //       },
+  //       enumerable: true,
+  //       configurable: true,
+  //     });
+  //   });
+
+  //   const balanceSheet = { ...this.data.balances };
+  //   this.balances = {
+  //     getAll: () => balanceSheet,
+  //     getByAddress: (address: string) => balanceSheet[address],
+  //     delete: async (address: string) => {
+  //       delete balanceSheet[address];
+  //       await this.writeData<BalanceSheet>("balances", balanceSheet);
+  //     },
+  //   };
+	// }
+
+  async writeData<T>(collection: string, data: T) {
+    const filePath = path.join("app", "db", "data", `${collection}.json`);
+    return await fs.writeFile(filePath, JSON.stringify(data));
+  }
+
+  // balances: BalanceHelpers;
+
+
+  get balances(): BalanceHelpers {
     const balanceSheet = { ...this.data.balances };
-    this.balances = {
+
+    return {
       getAll: () => balanceSheet,
       getByAddress: (address: string) => balanceSheet[address],
       delete: async (address: string) => {
@@ -43,22 +76,5 @@ export default class DB {
         await this.writeData<BalanceSheet>("balances", balanceSheet);
       },
     };
-	}
-
-  async writeData<T>(collection: string, data: T) {
-    const filePath = path.join("app", "db", "data", `${collection}.json`);
-    return await fs.writeFile(filePath, JSON.stringify(data));
   }
-
-  balances: BalanceHelpers;
-
-
-	// balances: BalanceHelpers = {
-  //   getAll: () => this.data.balances,
-  //   getByAddress: (address: string) => this.data.balances[address],
-  //   delete: async (address: string) => {
-  //     delete this.data.balances[address];
-  //     await this.writeData<BalanceSheet>("balances", this.data.balances);
-  //   },
-	// };
 }
