@@ -20,55 +20,19 @@ export default class DB {
 		this.data = {
       balances: require('app/db/data/balances.json') as BalanceSheet,
     };
-    this.init();
 	}
 
-    private init() {
-    Object.keys(this.data).forEach((key) => {
-      Object.defineProperty(this, key, {
-        get() {
-          return this.data[key];
-        },
-        enumerable: true,
-        configurable: true,
-      });
-    });
-  }
-
-  // private init() {
-  //   Object.keys(this.data).forEach((key) => {
-  //     Object.defineProperty(this, key, {
-  //       get() {
-  //         return this.data[key];
-  //       },
-  //       enumerable: true,
-  //       configurable: true,
-  //     });
-  //   });
-
-  //   const balanceSheet = { ...this.data.balances };
-  //   this.balances = {
-  //     getAll: () => balanceSheet,
-  //     getByAddress: (address: string) => balanceSheet[address],
-  //     delete: async (address: string) => {
-  //       delete balanceSheet[address];
-  //       await this.writeData<BalanceSheet>("balances", balanceSheet);
-  //     },
-  //   };
-	// }
-
   async writeData<T>(collection: string, data: T) {
-    const filePath = path.join("app", "db", "data", `${collection}.json`);
+    let root = path.join(process.cwd(), "src")
+    const filePath = path.join(root, "db", "data", `${collection}.json`);
     return await fs.writeFile(filePath, JSON.stringify(data));
   }
 
-  // balances: BalanceHelpers;
 
-
-  get balances(): BalanceHelpers {
+  get balances(): BalanceHelpers  {
     const balanceSheet = { ...this.data.balances };
 
-    return {
+   return {
       getAll: () => balanceSheet,
       getByAddress: (address: string) => balanceSheet[address],
       delete: async (address: string) => {

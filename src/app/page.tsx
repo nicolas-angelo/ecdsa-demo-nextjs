@@ -1,5 +1,5 @@
-// "use client";
-// import axios from "axios"
+"use client";
+import axios from "axios"
 
 // export const revalidate = 0
 
@@ -9,25 +9,24 @@
 // 			return res.data
 // }
 
-export default async function Home() {
+export default function Home() {
 	// const balances = await getBalances()
-	// const getBalances = async () => {
-	// 	try {
-	// 		let { data } = await axios.get("./api/hello")
-	// 		console.log({ data })
-	// 		// const res = await fetch(`/api/balances`, {
-	// 		// 	cache: "no-cache",
-	// 		// });
-	// 		// console.log(await res.json());
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// };
+	const getBalances = async () => {
+		try {
+			let { data } = await axios.get("./api/balances")
+			console.log({ data })
+			// const res = await fetch(`/api/balances`, {
+			// 	cache: "no-cache",
+			// });
+			// console.log(await res.json());
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	return (
 		<div>
-			B:
-			{/* <button onClick={getBalances}>Get balance</button> */}
+			<button onClick={getBalances}>Get balance</button>
 		</div>
 	);
 }
