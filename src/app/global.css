@@ -1,3 +1,101 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+	.container {
+		@apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+	}
+
+	button:disabled {
+		@apply cursor-not-allowed opacity-50;
+	}
+	.btn-base {
+		@apply rounded-md text-sm font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2;
+	}
+	.btn-primary {
+		@apply border border-transparent bg-sky-500 text-white hover:bg-sky-600 focus:ring-sky-600;
+	}
+	button[type="submit"],
+	.submit-btn {
+		@apply btn-base btn-primary flex justify-center px-4 py-2 shadow-black;
+	}
+	.input-label {
+		@apply block text-sm font-medium text-neutral-200;
+	}
+
+	.input-base {
+		@apply block w-full appearance-none rounded-md px-3 py-2 font-sans font-medium tracking-wide shadow-inner shadow-black focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm;
+	}
+
+	.input-primary {
+		@apply border border-neutral-900 bg-neutral-800 font-medium text-neutral-200 placeholder:text-neutral-500 focus:ring-sky-400;
+	}
+
+	form label {
+		@apply input-label mb-2;
+	}
+
+	form input {
+		@apply input-base input-primary;
+	}
+}
+
+a {
+	color: inherit;
+	text-decoration: inherit;
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+	height: 20px;
+}
+
+::-webkit-scrollbar-track {
+	border-radius: 10px;
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #4a5968;
+	border-radius: 10px;
+	border: 3px solid #1f2021;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #45607b;
+}
+
+.animated-box::before {
+	content: "";
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: -50%;
+	left: -50%;
+	background: linear-gradient(0deg, transparent, #0e82ee, #0e82ee);
+	animation: gradient 6s linear infinite;
+	transform-origin: bottom right;
+}
+
+.animated-box::after {
+	content: "";
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: -50%;
+	left: -50%;
+	background: linear-gradient(0deg, transparent, #0e82ee, #0e82ee);
+	transform-origin: bottom right;
+	animation: gradient 6s linear infinite;
+	animation-delay: -3s;
+}
+
+@keyframes gradient {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
