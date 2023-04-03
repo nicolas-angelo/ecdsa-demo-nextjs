@@ -12,7 +12,7 @@ export const authOptions: NextAuthOptions = {
 			},
 			async authorize(credentials, _) {
 				const response = await fetch(
-					`/api/accounts?username=${credentials.username}`
+					`/api/accounts?username=${credentials?.username}`
 				);
 				if (!response.ok) return null;
 				return (await response.json()) ?? null;

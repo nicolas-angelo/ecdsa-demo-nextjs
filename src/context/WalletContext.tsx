@@ -46,7 +46,7 @@ export const useWallet = () => React.useContext(WalletContext);
 // 			throw new Error(`Fetch error: ${err.message}`);
 // 		});
 
-export default function WalletProvider({ children }) {
+export default function WalletProvider({ children }: { children: React.ReactNode }) {
 	const [username, setUsername] = React.useState<string>("");
 	// const {
 	// 	data: account,
