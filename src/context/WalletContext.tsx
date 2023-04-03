@@ -7,9 +7,9 @@ export interface WalletCtxProps {
 }
 
 export interface AuthHelpers {
-	account: Account;
+	account: Account | undefined;
 	isLoading: boolean;
-	error: Error;
+	error: Error | undefined;
 	username: string;
 	setUsername: (username: string) => void;
 	createAccount: (username: string) => void;
