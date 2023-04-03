@@ -5,8 +5,9 @@ const db = new AccountClient("alchemy");
 
 export async function GET(request: Request) {
 	const { searchParams } = new URL(request.url);
-	if (searchParams.get("username")) {
-		let account = await db.searchAccount(searchParams.get("username"));
+	let username = searchParams.get("username");
+	if (username) {
+		let account = await db.searchAccount(username);
 		return NextResponse.json(account);
 	}
 	let accounts = await db.getAllAccounts();
