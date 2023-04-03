@@ -47,7 +47,7 @@ export const useWallet = () => React.useContext(WalletContext);
 // 		});
 
 export default function WalletProvider({ children }) {
-	const [username, setUsername] = React.useState<string>();
+	const [username, setUsername] = React.useState<string>("");
 	// const {
 	// 	data: account,
 	// 	error,
