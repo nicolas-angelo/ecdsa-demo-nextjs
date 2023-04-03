@@ -7,10 +7,10 @@ export interface WalletCtxProps {
 }
 
 export interface AuthHelpers {
-	account: Account | undefined;
+	account: Account;
 	isLoading: boolean;
-	error: Error | undefined;
-	username: string | undefined;
+	error: Error;
+	username: string;
 	setUsername: (username: string) => void;
 	createAccount: (username: string) => void;
 }
@@ -19,35 +19,35 @@ const WalletContext = React.createContext<AuthHelpers>({
 	account: undefined,
 	isLoading: true,
 	error: undefined,
-	username: undefined,
+	username: "",
 	setUsername: (_: string) => {},
 	createAccount: (_: string) => {},
 });
 
 export const useWallet = () => React.useContext(WalletContext);
 
-type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+// type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
-const fetcher = (...args: any) => fetch(args).then(res => res.json());
-const typedFetch = <P, T>(url: string, body: P, method: HttpMethod): Promise<T> =>
-	fetch(url, {
-		method,
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify(body),
-	})
-		.then(res => {
-			if (!res.ok) {
-				throw new Error("Network response was not ok");
-			}
-			return res.json() as Promise<T>;
-		})
-		.then(data => data)
-		.catch((err: Error) => {
-			throw new Error(`Fetch error: ${err.message}`);
-		});
+// const fetcher = (...args: any) => fetch(args).then(res => res.json());
+// const typedFetch = <P, T>(url: string, body: P, method: HttpMethod): Promise<T> =>
+// 	fetch(url, {
+// 		method,
+// 		headers: { "Content-Type": "application/json" },
+// 		body: JSON.stringify(body),
+// 	})
+// 		.then(res => {
+// 			if (!res.ok) {
+// 				throw new Error("Network response was not ok");
+// 			}
+// 			return res.json() as Promise<T>;
+// 		})
+// 		.then(data => data)
+// 		.catch((err: Error) => {
+// 			throw new Error(`Fetch error: ${err.message}`);
+// 		});
 
 export default function WalletProvider({ children }) {
-	const [username, setUsername] = React.useState<string>("mark.eth");
+	const [username, setUsername] = React.useState<string>();
 	// const {
 	// 	data: account,
 	// 	error,
@@ -64,12 +64,12 @@ export default function WalletProvider({ children }) {
 
 	function createAccount(username: string) {
 		setUsername(username);
-		typedFetch<AccountUpdateParams, Account>("/api/accounts", { username }, "POST")
-			.then(data => {
-				console.log("data: ", data);
-				// mutate(data);
-			})
-			.catch(err => console.log(err));
+		// typedFetch<AccountUpdateParams, Account>("/api/accounts", { username }, "POST")
+		// 	.then(data => {
+		// 		console.log("data: ", data);
+		// 		// mutate(data);
+		// 	})
+		// 	.catch(err => console.log(err));
 	}
 
 	// React.useEffect(() => {
@@ -79,9 +79,9 @@ export default function WalletProvider({ children }) {
 	return (
 		<WalletContext.Provider
 			value={{
-				account: null,
+				account: undefined,
 				isLoading: true,
-				error: null,
+				error: undefined,
 				username,
 				setUsername,
 				createAccount,
