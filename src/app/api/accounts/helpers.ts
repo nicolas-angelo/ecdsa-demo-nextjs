@@ -18,6 +18,7 @@ const generateAccount = ({
 	privateKey: pk.hex,
 	username,
 	balance: 0,
+	verified: true,
 });
 
 export default class AccountClient {
@@ -38,28 +39,44 @@ export default class AccountClient {
 	}
 
 	async createAccount(username: string, s = 200) {
-		let pk = generatePrivateKey();
-		let account = generateAccount({ pk, username });
-		return await this.db.put(account, account.address, expIn(s));
-	}
-
-	async findAccount(username: string) {
-		return await this.db.fetch({ username });
+		let user = await this.db.fetch({ username, key: username });
+		console.log("png", user);
+		if (user.items[0]) {
+			return user.items[0];
+		} else {
+			console.log("creating account");
+			return {};
+			// let pk = generatePrivateKey();
+			// let account = generateAccount({ pk, username });
+			// try {
+			// 	let r = await this.db.insert(account, username);
+			// 	return r;
+			// } catch (err) {
+			// 	console.log(err);
+			// 	return new Error(err);
+			// }
+		}
 	}
 
 	async getAccount(address: string) {
-		return await this.db.get(address);
+		let user = await this.db.get(address);
+		return user;
+	}
+
+	async searchAccount(username: string) {
+		let user = await this.db.fetch({ username, verified: true });
+		return user.items[0] ? user.items[0] : undefined;
 	}
 
 	async updateAccount<T = AccountUpdateParams>(
-		address: string,
+		username: string,
 		payload: T,
 		s = 200
 	) {
-		return await this.db.update<T>(payload, address, expIn(s));
+		return await this.db.update<T>(payload, username, expIn(s));
 	}
 
-	async deleteAccount(address: string) {
-		return await this.db.delete(address);
+	async deleteAccount(username: string) {
+		return await this.db.delete(username);
 	}
 }

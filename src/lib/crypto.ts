@@ -1,4 +1,4 @@
-import secp from "ethereum-cryptography/secp256k1.js";
+import * as secp from "ethereum-cryptography/secp256k1.js";
 import { keccak256 } from "ethereum-cryptography/keccak.js";
 import { toHex } from "ethereum-cryptography/utils.js";
 

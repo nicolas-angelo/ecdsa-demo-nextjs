@@ -1,7 +1,9 @@
 "use client";
-import { LabeledInput } from "app/components";
-import { useWallet } from "app/context/WalletContext";
 import React from "react";
+import { useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { LabeledInput } from "app/components";
+// import { useWallet } from "app/context/WalletContext";
 
 const WALLET_FORM_SCHEMA = {
 	address: {
@@ -11,37 +13,41 @@ const WALLET_FORM_SCHEMA = {
 	},
 };
 
-const onChange =
-	<T,>(setter: SetState<T>) =>
-	(evt: InputChangeEvent) =>
-		setter(evt.target.value as unknown as T);
-
 export default function Wallet() {
 	const [name, setName] = React.useState("");
-	const { account, username, setUsername, error, isLoading } = useWallet();
+	// const { account, error, isLoading, createAccount } = useWallet();
+	const searchParams = useSearchParams();
 
-	const handleSubmit = (evt: React.FormEvent) => {
+	const handleSubmit = async (evt: React.FormEvent) => {
 		evt.preventDefault();
-		setUsername(name);
+
+		const signInResult = await signIn("ethereum", {
+			username: name,
+			redirect: false,
+			callbackUrl: searchParams?.get("from") || "/dashboard",
+		});
+
+		if (!signInResult?.ok) {
+			console.log("signInResult: ", signInResult);
+			return;
+		}
+
+		// createAccount(name);
 	};
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
-
-	if (error) {
-		return <div>Failed to load</div>;
-	}
+	// if (error) {
+	// 	return <div>Failed to load</div>;
+	// }
 
 	return (
 		<div className="w-full sm:max-w-md">
 			<div className="rounded-lg bg-neutral-700 px-4 py-8 text-gray-200 shadow-lg shadow-black sm:px-10">
-				<div className="balance">Balance: {account?.balance}</div>
+				{/* <div className="balance">Balance: {account?.balance}</div> */}
 				<form id="wallet" className="space-y-6" onSubmit={handleSubmit}>
 					<LabeledInput
 						{...WALLET_FORM_SCHEMA["address"]}
 						value={name}
-						onChange={onChange(setName)}
+						onChange={evt => setName(evt.target.value)}
 					/>
 					<div className="mt-6">
 						<div className="relative">

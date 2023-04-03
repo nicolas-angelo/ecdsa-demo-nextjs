@@ -7,10 +7,11 @@ declare global {
 		privateKey: string;
 		username: string;
 		balance: number;
+		verified: boolean;
 	}
 
 	type AccountUpdateParams = Partial<
-		Omit<Account, "key" | "address" | "privateKey">
+		Omit<Account, "key" | "address" | "privateKey" | "verified">
 	>;
 
 	type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
