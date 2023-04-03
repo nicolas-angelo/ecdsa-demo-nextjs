@@ -2,8 +2,8 @@
 import { Wallet } from "app/components";
 import { LIVE_URL } from "app/constants";
 
-async function getBalances() {
-	const res = await fetch(LIVE_URL.concat("/api/balances"), { cache: "no-store" });
+async function getAccounts() {
+	const res = await fetch(LIVE_URL.concat("/api/accounts"), { cache: "no-store" });
 	if (!res.ok) {
 		// This will activate the closest `error.js` Error Boundary
 		throw new Error("Failed to fetch data");
@@ -13,7 +13,7 @@ async function getBalances() {
 }
 
 export default async function Home() {
-	const balances = await getBalances();
+	const balances = await getAccounts();
 
 	return (
 		<div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 ">

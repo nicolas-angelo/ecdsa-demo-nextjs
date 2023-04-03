@@ -1,6 +1,6 @@
 "use client";
 import { LabeledInput } from "app/components";
-import useWallet from "app/hooks/useWallet";
+import { useWallet } from "app/context/WalletContext";
 import React from "react";
 
 const WALLET_FORM_SCHEMA = {
@@ -11,28 +11,37 @@ const WALLET_FORM_SCHEMA = {
 	},
 };
 
-const setValue =
-	<T,>(setter: React.Dispatch<React.SetStateAction<T>>) =>
-	(evt: React.ChangeEvent<HTMLInputElement>) =>
+const onChange =
+	<T,>(setter: SetState<T>) =>
+	(evt: InputChangeEvent) =>
 		setter(evt.target.value as unknown as T);
 
 export default function Wallet() {
-	const { balance, fetchBalance, currentAddress, setAddress } = useWallet();
+	const [name, setName] = React.useState("");
+	const { account, username, setUsername, error, isLoading } = useWallet();
 
-	async function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
-		const address = evt.target.value;
-		setAddress(address);
-		address && fetchBalance(address);
+	const handleSubmit = (evt: React.FormEvent) => {
+		evt.preventDefault();
+		setUsername(name);
+	};
+
+	if (isLoading) {
+		return <div>Loading...</div>;
 	}
+
+	if (error) {
+		return <div>Failed to load</div>;
+	}
+
 	return (
 		<div className="w-full sm:max-w-md">
 			<div className="rounded-lg bg-neutral-700 px-4 py-8 text-gray-200 shadow-lg shadow-black sm:px-10">
-				<div className="balance">Balance: {balance}</div>
-				<form id="auth-sign-in" className="space-y-6">
+				<div className="balance">Balance: {account?.balance}</div>
+				<form id="wallet" className="space-y-6" onSubmit={handleSubmit}>
 					<LabeledInput
 						{...WALLET_FORM_SCHEMA["address"]}
-						value={currentAddress}
-						onChange={onChange}
+						value={name}
+						onChange={onChange(setName)}
 					/>
 					<div className="mt-6">
 						<div className="relative">
@@ -46,7 +55,7 @@ export default function Wallet() {
 							</div>
 						</div>
 
-						<div className="mt-6 grid grid-cols-3 gap-3">
+						{/* <div className="mt-6 grid grid-cols-3 gap-3">
 							<LabeledInput
 								{...WALLET_FORM_SCHEMA["address"]}
 								value={currentAddress}
@@ -57,10 +66,12 @@ export default function Wallet() {
 								value={currentAddress}
 								onChange={onChange}
 							/>
-						</div>
+						</div> */}
 					</div>
 					<div>
-						<button type="submit" className="w-full">SIGN IN</button>
+						<button type="submit" className="w-full">
+							SIGN IN
+						</button>
 					</div>
 				</form>
 			</div>
