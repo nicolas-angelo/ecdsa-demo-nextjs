@@ -2,7 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Card, LabeledInput } from "app/components";
-import { useWallet } from "app/context/WalletContext"
+import { useWallet } from "app/context/WalletContext";
 import { EnsIcon } from "app/components/icons";
 
 enum FormType {
@@ -23,8 +23,10 @@ export default function ConnectWallet({ isLoading }: { isLoading?: boolean }) {
 		const username = formData.get("username");
 		view === FormType.Unlock
 			? await unlock(username as string)
-			: generate(username as string)
-			router.refresh();
+			: generate(username as string, {
+					onError: err => console.error(err),
+			  });
+		router.refresh();
 	};
 
 	const generateForm = (type: FormType) => (

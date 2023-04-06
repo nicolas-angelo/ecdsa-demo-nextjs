@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { signIn as authSignIn, type SignInResponse as Res } from "next-auth/react";
 
 type SignInResponse = Omit<Res, "status" | "error">;
@@ -9,10 +9,11 @@ interface Options<S, E> {
 	onError?: (res: E) => void;
 }
 
-type UnlockOptions = Options<SignInResponse, SignInErrorResponse>
-type GenerateOptions = Options<Account, Error>
+type AccountError = Pick<AxiosError, "code" | "response">;
+type UnlockOptions = Options<SignInResponse, SignInErrorResponse>;
+type GenerateOptions = Options<Account, AccountError>;
 
-export async function signIn(username: string, cbs?: UnlockOptions) {
+export async function signIn(username: string, cb?: UnlockOptions) {
 	const signInResult = await authSignIn("ethereum", {
 		username,
 		redirect: false,
@@ -20,8 +21,8 @@ export async function signIn(username: string, cbs?: UnlockOptions) {
 	if (signInResult) {
 		let { url, ok, status, ...rest } = signInResult;
 		let error = String(rest?.error);
-		ok && cbs?.onSuccess && cbs.onSuccess({ url, ok: true });
-		!ok && cbs?.onError && cbs.onError({ url, ok: false, error });
+		ok && cb?.onSuccess && cb.onSuccess({ url, ok: true });
+		!ok && cb?.onError && cb.onError({ url, ok: false, error });
 	}
 }
 
@@ -29,7 +30,10 @@ export const createAccount = (username: string, cbs?: GenerateOptions) => {
 	axios
 		.post<Account>("/api/accounts", { username })
 		.then(async ({ data }) => {
-      cbs?.onSuccess && cbs.onSuccess(data);
+			cbs?.onSuccess && cbs.onSuccess(data);
+			await signIn(data.username, {
+				onError: err => console.log("SIGN IN ERR: ", err),
+			});
 		})
-		.catch(err => cbs?.onError && cbs.onError(err));
+		.catch(({ response, code }) => cbs?.onError && cbs.onError({ response, code }));
 };

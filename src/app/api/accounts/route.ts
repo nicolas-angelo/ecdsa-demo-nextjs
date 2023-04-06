@@ -13,10 +13,9 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
 	const body = await request.json();
-	console.log(body);
 	let exists = await searchAccount(body.username);
 	if (exists) {
-		return NextResponse.json({ error: "username already exists" });
+		return new Response("Username already exists!", { status: 500 });
 	}
 	let account = await createAccount(body.username);
 	return NextResponse.json(account);

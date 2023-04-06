@@ -17,8 +17,8 @@ export interface WalletContext {
 	session: Session | null;
 	isLoading: boolean;
 	error: WalletError | undefined;
-	unlock: (username: string) => Promise<void>;
-	generate: (username: string) => void;
+	unlock: typeof signIn;
+	generate: typeof createAccount;
 }
 
 const WalletContext = React.createContext<WalletContext>({
