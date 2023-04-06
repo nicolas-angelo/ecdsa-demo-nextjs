@@ -1,6 +1,12 @@
 export {};
 
 declare global {
+
+	interface ChildrenAndClassesProps {
+		children: React.ReactNode
+		className?: string
+	}
+	
 	interface Account {
 		key: string;
 		address: string;

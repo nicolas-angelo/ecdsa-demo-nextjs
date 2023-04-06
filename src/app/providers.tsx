@@ -2,10 +2,14 @@
 import { SessionProvider } from "next-auth/react";
 import WalletProvider from "app/context/WalletContext";
 
-export default function Providers({ children }: { children: React.ReactNode }) {
+const Providers = ({ children }: {
+	children: React.ReactNode
+}) => {
 	return (
-		<SessionProvider>
+		<SessionProvider refetchInterval={10}>
 			<WalletProvider>{children}</WalletProvider>
 		</SessionProvider>
 	);
-}
+};
+
+export default Providers;

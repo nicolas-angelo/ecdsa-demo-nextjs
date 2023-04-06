@@ -2,7 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+	.text-default {
+		@apply text-neutral-600 dark:text-neutral-200;
+	}
+}
+
 @layer components {
+	.card {
+		@apply text-default flex flex-col rounded-lg bg-white px-4 py-8 dark:bg-neutral-700 sm:px-10;
+	}
 	.container {
 		@apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
 	}
@@ -11,29 +20,30 @@
 		@apply cursor-not-allowed opacity-50;
 	}
 	.btn-base {
-		@apply rounded-md text-sm font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2;
+		@apply rounded-full text-sm font-semibold shadow focus:outline-none focus:ring-2 focus:ring-offset-2;
 	}
 	.btn-primary {
-		@apply border border-transparent bg-sky-500 text-white hover:bg-sky-600 focus:ring-sky-600;
+		@apply border border-transparent bg-neutral-900 text-white hover:bg-sky-500 focus:ring-sky-500;
 	}
+
 	button[type="submit"],
-	.submit-btn {
-		@apply btn-base btn-primary flex justify-center px-4 py-2 shadow-black;
+	.btn {
+		@apply btn-base btn-primary flex justify-center px-4 py-2 dark:shadow-black;
 	}
 	.input-label {
-		@apply block text-sm font-medium text-neutral-200;
+		@apply pl-2 text-sm font-medium leading-6 text-neutral-500  dark:text-neutral-100;
 	}
 
 	.input-base {
-		@apply block w-full appearance-none rounded-md px-3 py-2 font-sans font-medium tracking-wide shadow-inner shadow-black focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm;
+		@apply block w-full appearance-none rounded-full border px-3 py-1.5 font-sans font-medium tracking-wide shadow-inner focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm sm:leading-6;
 	}
 
 	.input-primary {
-		@apply border border-neutral-900 bg-neutral-800 font-medium text-neutral-200 placeholder:text-neutral-500 focus:ring-sky-400;
+		@apply text-default border-0 bg-neutral-100 shadow-neutral-300 ring-2 ring-neutral-200 placeholder:italic  placeholder:text-neutral-400 focus:ring-sky-400 dark:bg-neutral-800 dark:shadow-black dark:ring-neutral-600  dark:placeholder:text-neutral-500 dark:focus:ring-sky-400;
 	}
 
 	form label {
-		@apply input-label mb-2;
+		@apply input-label;
 	}
 
 	form input {
