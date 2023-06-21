@@ -1,14 +1,13 @@
 "use client";
-import { SessionProvider } from "next-auth/react";
-import WalletProvider from "app/context/WalletContext";
+// import { SessionProvider } from "next-auth/react";
 
-const Providers = ({ children }: {
-	children: React.ReactNode
-}) => {
+const Providers = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<SessionProvider refetchInterval={10}>
-			<WalletProvider>{children}</WalletProvider>
-		</SessionProvider>
+		<>
+		{/* <SessionProvider refetchInterval={10}> */}
+			{children}
+		{/* </SessionProvider> */}
+		</>
 	);
 };
 
