@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
+		"agent": "ts-node agent-test.mts",
 		"dev": "next dev",
 		"build": "yarn build:icons && next build",
 		"start": "next start",
@@ -16,15 +17,19 @@
 		"@thirdweb-dev/react": "nightly",
 		"@thirdweb-dev/sdk": "^3.10.21",
 		"@thirdweb-dev/wallets": "^0.2.26",
+		"ai": "^2.1.7",
 		"axios": "^1.3.4",
 		"deta": "^1.1.0",
 		"ethereum-cryptography": "^1.2.0",
 		"ethers": "^5",
 		"next": "13.4.6",
 		"next-auth": "^4.22.1",
+		"openai": "^3.3.0",
+		"openai-edge": "^1.1.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-icons": "^4.8.0",
+		"reflect-metadata": "^0.1.13",
 		"swr": "^2.1.2"
 	},
 	"devDependencies": {
@@ -36,12 +41,14 @@
 		"@types/react": "^18.2.12",
 		"@types/react-dom": "^18.2.5",
 		"autoprefixer": "^10.4.14",
+		"dotenv": "^16.3.1",
+		"open-cli": "^7.2.0",
 		"postcss": "^8.4.24",
 		"prettier": "^2.8.7",
 		"prettier-plugin-tailwindcss": "^0.2.6",
+		"tailwind-merge": "^1.13.2",
 		"tailwindcss": "^3.3.2",
-		"typescript": "^5.1.3",
-		"open-cli": "^7.2.0",
-		"tailwind-merge": "^1.13.2"
+		"ts-node": "^10.9.1",
+		"typescript": "^5.1.3"
 	}
 }
